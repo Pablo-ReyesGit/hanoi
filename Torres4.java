@@ -880,16 +880,29 @@ private int NumContMov;
         }
     }
      
-   private void resolverHanoi(int size, Pilas origen, Pilas auxiliar1, Pilas auxiliar2, Pilas destino){
+   private void resolverHanoi(int size, Pilas origen, Pilas auxiliar1, Pilas auxiliar2, Pilas destino) {
+    if (size == 0) {
+        return;
+    }
     if (size == 1) {
         moverPlataforma(origen, destino);
     } else {
-        // Mover los discos de origen a auxiliar1 usando destino como auxiliar
-        resolverHanoi(size - 1, origen, destino, auxiliar2, auxiliar1);
-        // Mover el disco restante de origen a destino
-        moverPlataforma(origen, destino);
-        // Mover los discos de auxiliar1 a destino usando origen como auxiliar
-        resolverHanoi(size - 1, auxiliar1, origen, auxiliar2, destino);
+        // Mover n-2 discos a auxiliar1
+        resolverHanoi(size - 2, origen, auxiliar2, destino, auxiliar1);
+        // Mover un disco a auxiliar2 (torre C en tu caso)
+        if (size > 1) {
+            moverPlataforma(origen, auxiliar2);
+        }
+        // Mover el siguiente disco a destino
+        if (size > 1) {
+            moverPlataforma(origen, destino);
+        }
+        // Mover el disco de auxiliar2 (torre C) a destino
+        if (size > 1) {
+            moverPlataforma(auxiliar2, destino);
+        }
+        // Mover los discos de auxiliar1 al destino, usando origen y auxiliar2 como auxiliares
+        resolverHanoi(size - 2, auxiliar1, origen, auxiliar2, destino);
     }
 }
      
